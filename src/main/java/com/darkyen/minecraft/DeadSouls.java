@@ -988,7 +988,7 @@ public final class DeadSouls extends JavaPlugin implements Listener, DeadSoulsAP
         @NotNull
         Location findSafeSoulSpawnLocation(@NotNull Player player) {
             final Location playerLocation = player.getLocation();
-            if (isNear(lastSafeLocation, playerLocation, 20)) {
+            if (isNear(lastSafeLocation, playerLocation, 150)) {
                 set(playerLocation, lastSafeLocation);
                 playerLocation.setY(playerLocation.getY() + SOUL_HOVER_OFFSET);
                 return playerLocation;
