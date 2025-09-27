@@ -791,7 +791,8 @@ public final class DeadSouls extends JavaPlugin implements Listener, DeadSoulsAP
         refreshEnabledWorlds();
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    // This has to be on MONITOR, since Towny listens on Highest
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlayerDeath(PlayerDeathEvent event) {
         final Player player = event.getEntity();
         if (!player.hasPermission("com.darkyen.minecraft.deadsouls.hassoul")) {
@@ -918,6 +919,10 @@ public final class DeadSouls extends JavaPlugin implements Listener, DeadSoulsAP
 
         // No need to set setKeepInventory/Level to false, because if we got here, it already is false
         if (clearItemDrops) {
+            // Clear the inventory, in case someone else after this comes and sets keepInventory on for this event, which
+            // would result in the drops being duplicated. Slimefun will have removed any soulbound items already by now,
+            // so we don't have to worry about them.
+            event.getEntity().getInventory().clear();
             event.getDrops().clear();
         }
         if (clearXPDrops) {
